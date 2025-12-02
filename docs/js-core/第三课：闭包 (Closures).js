@@ -9,9 +9,18 @@ function buildList(list) {
         // 每个函数都在打印 i
         result.push( function() { console.log(item + ' ' + i) } );
     }
+
+    //老式写法
+    // for (var i = 0; i < 3; i++) {
+    // (function(lockedIndex) {
+    //     result.push(function() { console.log(lockedIndex) });
+    // })(i);
+    // }
     
     return result;
 }
+
+
 
 function testList() {
     var fnList = buildList([1, 2, 3]);

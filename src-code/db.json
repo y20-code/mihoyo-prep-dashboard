@@ -1,0 +1,18 @@
+{
+  "plans": [
+    {
+      "id": 1,
+      "content": "两数之和 (Two Sum)",
+      "isCompleted": true,
+      "type": "algorithm",
+      "createdAt": 1701500000000
+    },
+    {
+      "id": 2,
+      "content": "闭包原理深入",
+      "isCompleted": false,
+      "type": "theory",
+      "createdAt": 1701500000000
+    }
+  ]
+}
