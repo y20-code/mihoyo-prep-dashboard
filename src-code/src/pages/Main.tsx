@@ -1,19 +1,35 @@
 import {useState} from 'react'
 import type{PlanType, PlanItem} from '../types'
+//引入 Ant Design 组件
+import {Input,Select,Button,List,Checkbox,Tag,Typography,Card,Space} from 'antd';
+import { DeleteOutlined,PlusOutlined } from '@ant-design/icons';
 
 
 
-interface planInputProps{
+const {Option} = Select;
+const { Text, Title } = Typography;
+
+
+interface MainProps{
     onAdd: (content:string,type:PlanType) => void;
     plansV: PlanItem[];
     onDelete: (id:number) => void;
     onToggle: (id: number) => void;
 }
 
-function Main({onAdd,plansV,onDelete,onToggle}:planInputProps){
+function Main({onAdd,plansV,onDelete,onToggle}:MainProps){
+
+    
 
     const [inputValue,setInputValue] = useState<string>("");
     const [selectValue,setSelectValue] = useState<PlanType>('algorithm')
+
+    // 定义一个颜色映射，方便 Tag 使用
+    const typeColors: Record<PlanType, string> = {
+        algorithm: 'magenta',
+        theory: 'geekblue',
+        project: 'gold'
+    };
 
 
     const handleAdd = () =>{
@@ -24,61 +40,82 @@ function Main({onAdd,plansV,onDelete,onToggle}:planInputProps){
         setInputValue("");
     }
 
-
-    const handleKeyDown = (e:React.KeyboardEvent) =>{
-        if(e.key ==="Enter") handleAdd()
-    }
+    // 
+    // const handleKeyDown = (e:React.KeyboardEvent) =>{
+    //     if(e.key ==="Enter") handleAdd()
+    // }
 
     
 
 
     return(
         <div style={{ padding: '20px' }}>
-            <div style={{ marginBottom: '20px' }}>
-                <input 
-                    type="text" 
-                    placeholder="请输入任务"
+            <Card  
+                title={<Title level={3} style={{margin:0}} >🚀 米哈游备战任务板</Title>} 
+                variant="outlined"
+                style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+            >
+            <Space.Compact style={{width:'100%', marginBottom: '20px' }}>
+                <Select
+                    defaultValue="algorithm"
+                    value={selectValue}
+                    onChange={(e) => setSelectValue(e as PlanType)}
+                    style={{ width: '120px' }}
+                >
+                    <Option value="algorithm">算法 🧠</Option>
+                    <Option value="theory">理论 📖</Option>
+                    <Option value="project">项目 💻</Option>
+                </Select>
+                
+                <Input 
+                    placeholder='请输入任务'
                     value={inputValue}
-                    onKeyDown={handleKeyDown}
                     onChange={(e) => setInputValue(e.target.value)}
+                    onPressEnter={handleAdd}
                 />
-                <select value={selectValue} onChange={(e) => setSelectValue(e.target.value as PlanType )}>
-                    <option value="algorithm" >algorithm</option>
-                    <option value="theory" >theory</option>
-                    <option value="project" >project</option>
-                </select>
-            </div>
+                
+                <Button type="primary" icon={<PlusOutlined />} onClick={handleAdd}>
+                    添加
+                </Button>
+                
+            </Space.Compact>
             
-            <ul>
-                {plansV.map((item) => 
-                    (
-                        <li key={item.id}>{item.content}
-                            
-                            <input 
-                                type="checkbox" 
-                                checked={item.isCompleted}
-                                onChange={() => onToggle(item.id)}
-                            />
+            {/* 列表区 */}
+            <List
+                dataSource={plansV}
+                renderItem={(item) => (
+                    <List.Item
+                        actions={[
+                            <Button type="text" danger icon={<DeleteOutlined />} onClick={() => onDelete(item.id)}/>
+                        ]}
+                    >
+                        <List.Item.Meta
+                            // avatar 放勾选框
+                            avatar={
+                                <Checkbox 
+                                    checked={item.isCompleted} 
+                                    onChange={() => onToggle(item.id)} 
+                                />
+                            }
+                            // title 放主要内容
+                            title={
+                                <Typography.Text delete={item.isCompleted} style={{ color: item.isCompleted ? '#999' : 'inherit' }}>
+                                    {item.content}
+                                </Typography.Text>
+                            }
+                            // description 放标签
+                            description={
+                                <Tag color={typeColors[item.type]}>
+                                    {item.type.toUpperCase()}
+                                </Tag>
+                            }
+                        />
+                    </List.Item>
+                )}
+            />
 
-                            <span style={{ 
-                                textDecoration: item.isCompleted ? 'line-through' : 'none',
-                                color: item.isCompleted ? '#888' : '#000',
-                                flex: 1 
-                            }}>
-                            {item.content} 
-                            <span style={{ fontSize: '12px', marginLeft: '5px', color: '#666', background: '#f0f0f0', padding: '2px 5px', borderRadius: '4px' }}>
-                                {item.type}
-                            </span>
-                        </span>
-                        <button onClick={() => onDelete(item.id)}>x</button>
-                        </li>
-                        
-                    )
-                            
-                        
-                    )
-                }
-            </ul>
+            
+            </Card>
         </div>
     )
 }
