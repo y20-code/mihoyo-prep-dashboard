@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import type{PlanType, PlanItem} from '../types'
+import { useNavigate } from 'react-router-dom';
 //引入 Ant Design 组件
 import {Input,Select,Button,List,Checkbox,Tag,Typography,Card,Space} from 'antd';
 import { DeleteOutlined,PlusOutlined } from '@ant-design/icons';
@@ -8,6 +9,7 @@ import { DeleteOutlined,PlusOutlined } from '@ant-design/icons';
 
 const {Option} = Select;
 const { Text, Title } = Typography;
+
 
 
 interface MainProps{
@@ -23,6 +25,8 @@ function Main({onAdd,plansV,onDelete,onToggle}:MainProps){
 
     const [inputValue,setInputValue] = useState<string>("");
     const [selectValue,setSelectValue] = useState<PlanType>('algorithm')
+
+    const navigate = useNavigate();
 
     // 定义一个颜色映射，方便 Tag 使用
     const typeColors: Record<PlanType, string> = {
@@ -86,14 +90,20 @@ function Main({onAdd,plansV,onDelete,onToggle}:MainProps){
                 renderItem={(item) => (
                     <List.Item
                         actions={[
-                            <Button type="text" danger icon={<DeleteOutlined />} onClick={() => onDelete(item.id)}/>
+                            <Button type="text" danger icon={<DeleteOutlined />} onClick={(e) => {e.stopPropagation(); onDelete(item.id)}}/>
                         ]}
+                        onClick={() =>{
+                            navigate(`/detail/${item.id}`)
+                        }}
+                        style={{cursor: 'pointer'}}
                     >
+
                         <List.Item.Meta
                             // avatar 放勾选框
                             avatar={
                                 <Checkbox 
-                                    checked={item.isCompleted} 
+                                    checked={item.isCompleted}
+                                    onClick={(e) => e.stopPropagation()}
                                     onChange={() => onToggle(item.id)} 
                                 />
                             }
@@ -109,6 +119,7 @@ function Main({onAdd,plansV,onDelete,onToggle}:MainProps){
                                     {item.type.toUpperCase()}
                                 </Tag>
                             }
+                            
                         />
                     </List.Item>
                 )}

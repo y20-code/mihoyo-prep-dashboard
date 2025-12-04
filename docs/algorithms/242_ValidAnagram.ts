@@ -1,7 +1,17 @@
 /**
  * 242. 有效的字母异位词 (数组优化版)
- * 时间复杂度: O(N)
- * 空间复杂度: O(1) -> 因为数组长度固定是 26，跟输入字符串长度无关
+ * 给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的 字母异位词。
+
+ 
+
+示例 1:
+
+输入: s = "anagram", t = "nagaram"
+输出: true
+示例 2:
+
+输入: s = "rat", t = "car"
+输出: false
  */
 function isAnagram(s: string, t: string): boolean {
     // 1. 长度不一样，直接返回 false

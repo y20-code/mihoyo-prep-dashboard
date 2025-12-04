@@ -1,9 +1,23 @@
-import {useState} from "react"
+import {useState,useEffect} from "react"
 import type { PlanType,PlanItem } from "../types"
 
 export function usePlans(){
 
-    const [plans,setPlans] = useState<PlanItem[]>([])
+    const [plans,setPlans] = useState<PlanItem[]>(() =>{
+        const saved = localStorage.getItem("mihoyo-plans");
+        if (saved) {
+            try {
+                return JSON.parse(saved); // 把字符串变回数组
+            } catch (e) {
+                return []; // 如果数据坏了，就返回空
+            }
+        }
+        return [];
+    })
+
+    useEffect(() => {
+        localStorage.setItem("mihoyo-plans",JSON.stringify(plans))
+    },[plans])
 
     //添加一个任务
     const addPlan = (content:string,type:PlanType) =>{
