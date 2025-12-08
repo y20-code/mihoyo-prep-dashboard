@@ -5,6 +5,7 @@ import {
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
+  FieldTimeOutlined
 } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
 
@@ -32,6 +33,10 @@ const MainLayout: React.FC = () => {
       key: '/statistics',
       icon: <VideoCameraOutlined />,
       label: '统计',
+    },{
+      key: '/focus',
+      icon: <FieldTimeOutlined />, // 记得引入图标
+      label: '专注钟',
     },
   ]
 
