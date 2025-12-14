@@ -1,13 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
-import { Button, Card, Progress, Typography, Space } from 'antd';
+import { Button, Card, Progress, Typography, Space,List,Tag } from 'antd';
 import { PlayCircleOutlined, PauseCircleOutlined, ReloadOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
+
+interface FocusRecord {
+    id:number;
+    completedAt:string;
+    duration:number;
+}
 
 function Focus() {
     const DEFAULT_TIME = 25 * 60; // 25分钟 = 1500秒
     const [timeLeft, setTimeLeft] = useState(DEFAULT_TIME);
     const [isActive, setIsActive] = useState(false);
+    const [history,setHistory] = useState<FocusRecord[]>([]);
     
     // 💡 为什么不用 let timer? 
     // 因为组件每次渲染都会重置局部变量。必须用 useRef 存定时器 ID，它在渲染间是持久的。
@@ -34,6 +41,16 @@ function Focus() {
                     if (prev <= 1) {
                         clearInterval(timerRef.current!); // 倒计时结束
                         setIsActive(false);
+
+
+                        const now = new Date();
+                        const record:FocusRecord = {
+                            id:Date.now(),
+                            completedAt:`${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')}`,
+                            duration:DEFAULT_TIME / 60
+                        }
+
+                        setHistory(prev => [record,...prev]);
                         return 0;
                     }
                     return prev - 1;
@@ -88,6 +105,20 @@ function Focus() {
                     {isActive ? '保持专注...' : '准备好了吗？'}
                 </div>
             </Card>
+
+            <div style={{ marginTop: 30 }}>
+                <Title level={4}>专注记录</Title>
+                <List
+                    bordered
+                    dataSource={history}
+                    renderItem={(item) => (
+                        <List.Item>
+                            <span>🕒 完成于 {item.completedAt}</span>
+                            <Tag color="green">专注 {item.duration} 分钟</Tag>
+                        </List.Item>
+                    )}
+                />
+            </div>
         </div>
     );
 }

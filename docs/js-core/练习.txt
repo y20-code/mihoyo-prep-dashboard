@@ -1,0 +1,22 @@
+function chouKa(ms){
+    return new Promise((resolve,rejcet) =>{
+        setTimeout(() =>{
+            const a = Math.random()
+            if(a>0.5){
+                resolve("金色")
+            } else{
+                rejcet("紫色")
+            }
+        },ms)
+    })
+}
+
+async function start(){
+    try{
+        console.log("开始抽卡")
+        const result = await chouKa(1000)
+        console.log("欧皇！"+result)
+    }catch(error){
+        console.log("非酋")
+    }
+}

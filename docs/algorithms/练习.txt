@@ -1,115 +1,72 @@
-function twoSum(nums: number[], target: number): number[]{
-    const map = new Map<number,number>()
-    for(let i =0;i<nums.length;i++){
-        const tar = target - nums[i]
-        if(map.has(tar)){
-            return [map.get(tar),i]
-        }
-        map.set(nums[i],i)
-    }
-    return []
-}
+function intersection(nums1:number[],nums2:number[]):number[]{
+    const set1 = new Set(nums1);
+    const result = new Set<number>();
 
-function isAnagram(s: string, t: string): boolean{
-
-    if(s.length !== t.length) return false;
-
-    const table = new Array(26).fill(0);
-    const base = 97;
-
-    for (let i = 0;i<s.length;i++){
-        table[s.charCodeAt(i) - base]++;
-
-        table[s.charCodeAt(i) - base]--;
-    }
-
-    return table.every(count => count ===0)
-}
-
-function groupAnagrams(strs: string[]): string[][]{
-    const result = new Map<string:string[]>()
-
-    for(let str of strs){
-        const key = str.split('').sort().join('')
-        if(!result.has(key)){
-            result.set(key,[])
-        }
-
-        result.get(key).push(str)
-    }
-
-    return Array.from(result.value)
-}
-
-function intersection(nums1: number[], nums2: number[]): number[]{
-    const set1 = new set(nums1);
-    const result = new set();
-
-    for(let num of num2){
-        if(set1.has(num)){
-            result.add(num);
+    for(let i of nums2){
+        if(set1.has(i)){
+            result.add(i);
         }
     }
+
     return Array.from(result);
 }
 
-
-function getNext(num:number):boolean{
-
-    let sum =0
-
-    while(num!=0){
-        let tar = num%10;
-        sum = sum +tar*tar;
-
-        num = Math.floor(num / 10)
-    }
-
-    return sum;
-}
-
-
-function isHappy(n: number): boolean{
-    let start = n;
-    let fild =getNext(n);
-    while(fild !== 1 && start !==fild){
-        start = getNext(start)
-        fild = getNext(getNext())
-    }
-
-    return n===1
-}
-
-
-function reverseList(head: ListNode | null): ListNode | null{
-    let prev = null;
-    let curr = head;
-
-    while (curr !== null) {
-        count nextTemp = curr.next;
-
-        curr.next = prev;
-
-        prev = curr;
-
-        curr = nextTemp;
-    }
-
-    return prev;
-}
-
-function  moveZeroes(nums:number[]):void {
-
+function moveZeroes(nums:number[]):void{
     let slow = 0;
+    
 
     for(let fast = 0;fast<nums.length;fast++){
-
-        if(nums[fast] !== 0){
-
+        if(nums[fast]){
             [nums[slow],nums[fast]] = [nums[fast],nums[slow]]
-
-            slow++;
         }
+        slow++
     }
 
+    return nums;
+}
+
+function isAnagram(s:string,t:string):boolean{
+
+    const arr = new Array(26).fill(0)
+
+    const base = 97;
+
+    for(let i  = 0;i<s.length;i++){
+        arr[s.charCodeAt(i)-base]++
+        arr[t.charCodeAt(i)-base]--
+    }
+
+    return arr.every(val => val ===0)
+}
+
+
+function containsDuplicate(nums: number[]): boolean {
+    const set = new Set(nums);
+    return nums.length !== set.length
+}
+
+function twoSum(nums: number[], target: number): number[] {
+    
+}
+
+function groupAnagrams(strs: string[]): string[][] {
+    const result = new Map<string,string[]>();
+
+    for(let str of strs){
+        const tar = str.split('').sort().join('');
+        if(!result.has(tar)){
+            result.set(tar,[])
+        }
+
+        result.get(tar)!.push(str)
+    }
+
+    return Array.from(result.values())
+}
+
+function reverseList(head: ListNode | null): ListNode | null {
+    const prev = null;
+    const curr = head;
+
+    for()
 }
