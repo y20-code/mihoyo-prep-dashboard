@@ -65,8 +65,44 @@ function groupAnagrams(strs: string[]): string[][] {
 }
 
 function reverseList(head: ListNode | null): ListNode | null {
-    const prev = null;
-    const curr = head;
+    let prev = null;
+    let curr = head;
 
-    for()
+    while(curr !==null){
+        const nextTemp = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = nextTemp;
+    }
+
+    return prev
+}
+
+// 1. 算出平方和
+function getNext(n: number): number {
+
+    let sum = 0;
+
+
+    while(n!==0){
+        let g = n % 10;
+        sum += g * g;
+        n = Math.floor(n/10);
+    }
+
+    return sum
+}
+
+// 2. 快慢指针判断
+function isHappy(n: number): boolean {
+    // 默写这里
+    let slow = n
+    let fast = getNext(n)
+
+    while(fast !==1 && slow !== fast){
+        slow = getNext(slow)
+        fast = getNext(getNext(fast))
+    }
+
+    return fast === 1;
 }
