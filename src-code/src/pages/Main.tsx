@@ -17,9 +17,10 @@ interface MainProps{
     plansV: PlanItem[];
     onDelete: (id:number) => void;
     onToggle: (id: number) => void;
+    loading?: boolean;
 }
 
-function Main({onAdd,plansV,onDelete,onToggle}:MainProps){
+function Main({onAdd,plansV,onDelete,onToggle,loading}:MainProps){
 
     
 
@@ -86,6 +87,7 @@ function Main({onAdd,plansV,onDelete,onToggle}:MainProps){
             
             {/* 列表区 */}
             <List
+                loading={loading}
                 dataSource={plansV}
                 renderItem={(item) => (
                     <List.Item

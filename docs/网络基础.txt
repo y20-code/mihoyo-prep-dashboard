@@ -1,0 +1,13 @@
+1.HTTP方法(Method):
+    GET:获取数据（查）。
+    POST:提交新数据(增加)。
+    PUT/PATCH:修改数据(改)
+    DELETE:删除数据(删)。
+
+2.HTTP状态吗
+    200 OK:成功。
+    201 Created：创建成功 (常用于 POST)。 
+    400 Bad Request：你传的参数不对。
+    401 Unauthorized：没登录，或者 Token 过期。
+    404 Not Found：找不到接口或资源。
+    500 Server Error：后端代码崩了

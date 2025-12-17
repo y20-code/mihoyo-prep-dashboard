@@ -93,16 +93,25 @@ function getNext(n: number): number {
     return sum
 }
 
-// 2. 快慢指针判断
-function isHappy(n: number): boolean {
-    // 默写这里
-    let slow = n
-    let fast = getNext(n)
+function lengthOfLongestSubstring(s: string): number {
+    const set = new Set();
+    let slow = 0;
 
-    while(fast !==1 && slow !== fast){
-        slow = getNext(slow)
-        fast = getNext(getNext(fast))
+    let maxLen = 0;
+
+    for(let fast = 0;fast<s.length;fast++){
+        
+        while(set.has(s[fast])){
+            set.delete(s[slow])
+
+            slow++
+        }
+
+        set.add(s[fast])
+
+        maxLen = Math.max(maxLen,fast - slow +1)
     }
 
-    return fast === 1;
+    return maxLen
+
 }
