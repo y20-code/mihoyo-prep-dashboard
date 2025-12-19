@@ -37,7 +37,11 @@ const MainLayout: React.FC = () => {
       key: '/focus',
       icon: <FieldTimeOutlined />, // 记得引入图标
       label: '专注钟',
-    },
+    },{
+      key:'/practice',
+      icon:<UploadOutlined/>,
+      label:'练习',
+    }
   ]
 
   return (
