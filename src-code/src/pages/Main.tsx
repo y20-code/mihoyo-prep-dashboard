@@ -1,9 +1,11 @@
-import {useState} from 'react'
+import {useState,useMemo} from 'react'
 import type{PlanType, PlanItem} from '../types'
 import { useNavigate } from 'react-router-dom';
 //引入 Ant Design 组件
 import {Input,Select,Button,List,Checkbox,Tag,Typography,Card,Space} from 'antd';
-import { DeleteOutlined,PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined,PlusOutlined,SearchOutlined } from '@ant-design/icons';
+
+import { useDebounce } from '../hooks/useDebounce';
 
 
 
@@ -26,6 +28,20 @@ function Main({onAdd,plansV,onDelete,onToggle,loading}:MainProps){
 
     const [inputValue,setInputValue] = useState<string>("");
     const [selectValue,setSelectValue] = useState<PlanType>('algorithm')
+
+    const [searchTerm, setSearchTerm] = useState("");
+    // 1. 使用 Hook 获得防抖后的搜索词 (延迟 500ms)
+    // 用户打字时 searchTerm 变很快，但 debouncedSearchTerm 只会在停顿 500ms 后才变
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+    // 2. 使用 useMemo 过滤列表
+    // 只有当 plansV 变了，或者 debouncedSearchTerm 变了（也就是用户停顿后），才重新计算
+    const filteredPlans = useMemo(() => {
+        if (!debouncedSearchTerm) return plansV;
+        return plansV.filter(plan => 
+            plan.content.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+        );
+    }, [plansV, debouncedSearchTerm]);
 
     const navigate = useNavigate();
 
@@ -60,6 +76,16 @@ function Main({onAdd,plansV,onDelete,onToggle,loading}:MainProps){
                 variant="outlined"
                 style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
             >
+
+                <Input 
+                    placeholder="🔍 搜索任务..." 
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{ marginBottom: 20 }}
+                    allowClear
+                    prefix={<SearchOutlined style={{ color: '#ccc' }} />}
+                />
+
             <Space.Compact style={{width:'100%', marginBottom: '20px' }}>
                 <Select
                     defaultValue="algorithm"
@@ -88,7 +114,7 @@ function Main({onAdd,plansV,onDelete,onToggle,loading}:MainProps){
             {/* 列表区 */}
             <List
                 loading={loading}
-                dataSource={plansV}
+                dataSource={filteredPlans}
                 renderItem={(item) => (
                     <List.Item
                         actions={[

@@ -20,3 +20,7 @@ async function start(){
         console.log("非酋")
     }
 }
+
+const AuthContext = createContext<AuthContextType | null>(null)
+
+export function AuthProvider({children})
