@@ -9,7 +9,8 @@ import Focus from './pages/Focus';
 import PList from './components/PList';
 import { usePlans } from './hooks/usePlans';
 
-import PracticeModal from './practice/PracticeModal';
+// import PracticeModal from './practice/PracticeModal';
+import PracticeDnd from './practice/PracticeDnd';
 
 import {AuthProvider} from './context/AuthContext';
 import { RequireAuth } from './components/RequireAuth';
@@ -32,7 +33,7 @@ function App() {
             <Route path='practice' element={<PList/>}></Route>
           </Route>
           <Route path="detail/:id" element={<Algorithm/>}/>
-          <Route path="/Practice/:id" element={<PracticeModal/>}/>
+          <Route path="/Practice/:id" element={<PracticeDnd/>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
