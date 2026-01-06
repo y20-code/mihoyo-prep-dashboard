@@ -9,8 +9,7 @@ import Focus from './pages/Focus';
 import PList from './components/PList';
 import { usePlans } from './hooks/usePlans';
 
-// import PracticeModal from './practice/PracticeModal';
-import PracticeDnd from './practice/PracticeDnd';
+import { practiceRoutes } from './router/practiceRoutes';
 
 import {AuthProvider} from './context/AuthContext';
 import { RequireAuth } from './components/RequireAuth';
@@ -33,7 +32,17 @@ function App() {
             <Route path='practice' element={<PList/>}></Route>
           </Route>
           <Route path="detail/:id" element={<Algorithm/>}/>
-          <Route path="/Practice/:id" element={<PracticeDnd/>}/>
+          {
+            practiceRoutes.map(route => (
+              <Route
+                key={route.path}
+                path={`/practice/${route.path}`}
+                element={route.element}
+              />
+            ))
+          }
+          
+          <Route path="/practice/*" element={<div>练习不存在</div>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

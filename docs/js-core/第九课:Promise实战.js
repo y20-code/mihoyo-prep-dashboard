@@ -64,3 +64,83 @@ const result3 = remoteControl.next();
 console.log('屏幕显示:', result3);
 // 输出: { value: '散场', done: true } 
 // done: true 表示彻底结束了
+
+//1. 必杀技：Promise.all (生死与共) 
+// 全部成功： 返回一个数组，包含所有结果（顺序和请求顺序一致）。
+// 只要有一个失败： 整个 Promise.all 立刻 报错（Reject），你拿不到任何成功的数据。
+
+const p1 = Promise.resolve('任务 1 成功');
+const p2 = Promise.reject('任务 2 失败');
+
+Promise.all([p1,p2])
+    .then(results => {
+        console.log('全部成功:', results);
+    })
+    .catch(error => {
+        console.log('有任务失败了:', error);
+    });
+
+//2. 救命草：Promise.allSettled (各自为战)
+
+// 它永远不会 Reject（除非代码本身语法错了）。
+
+// 它会等所有请求都结束（不管成功失败）。
+
+// 返回的数据结构不一样，是对象数组。
+
+const p3 = Promise.resolve("待办事项获取成功");
+const p4 = Promise.reject("天气接口挂了");
+
+Promise.allSettled([p3, p4])
+  .then(results => {
+    // results 是这样的：
+    // [
+    //   { status: 'fulfilled', value: '待办事项获取成功' },
+    //   { status: 'rejected', reason: '天气接口挂了' }
+    // ]
+    
+    // 我们可以自己过滤出成功的数据
+    const successData = results
+        .filter(item => item.status === 'fulfilled')
+        .map(item => item.value);
+        
+    console.log("最终拿到的有用数据：", successData);
+  });
+
+
+//   手写 Promise.all
+
+function myPromiseAll(promises) {
+    return new Promise((resolve,reject) => {
+
+        if (!Array.isArray(promises)){
+            return reject(new TypeError('参数必须是一个数组'));
+        }
+
+        let result = [];
+        let count = 0;
+        const len = promises.length;
+
+        if (len === 0) {
+            return resolve(result);
+        }
+
+        promises.forEach((p,index) => {
+            Promise.resolve(p).then(
+                (value) => {
+                    result[index] = value;
+                    count++;
+                    if (count === len) {
+                        resolve(result);
+                    }
+                },
+                (reason) => {
+                    reject(reason)
+                }
+            )
+        })
+    })
+}
+
+
+
