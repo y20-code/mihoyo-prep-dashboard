@@ -1,4 +1,5 @@
 import { BrowserRouter,Routes,Route,Navigate} from 'react-router-dom';
+import { Suspense } from 'react';
 import Start from './pages/Start';
 import Main from './pages/Main';
 import Algorithm from './pages/Algorithm';
@@ -22,6 +23,9 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+      <Suspense fallback={
+        <div style={{padding:'20px',textAlign:'center'}}>资源加载中...</div>
+      }>
         <Routes>
           <Route path='/login' element={<Login/>}/>
           <Route path="/" element={<RequireAuth>< MainLayout/></RequireAuth>} >
@@ -44,6 +48,7 @@ function App() {
           
           <Route path="/practice/*" element={<div>练习不存在</div>} />
         </Routes>
+      </Suspense>
       </BrowserRouter>
     </AuthProvider>
   )

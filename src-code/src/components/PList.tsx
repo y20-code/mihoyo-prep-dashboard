@@ -22,9 +22,16 @@ function PList() {
         },
         { 
             key: 2, 
-            title: '练习 2:待定...', 
-            description: '下个练习做这里'
+            title: '练习 2:悬浮按钮', 
+            description: '使用 Group 进行分组，掌握 BackTop 回到顶部功能以及 tooltip 悬浮提示。',
+            path:'float-button',
         },
+        { 
+            key: 3, 
+            title: '练习 3:排版 Typography', 
+            description: '使用 editable 属性实现文本编辑',
+            path:'Typography',
+        }
 
     ]);
 
